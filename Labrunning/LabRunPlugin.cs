@@ -32,7 +32,6 @@ namespace Labrunning
 			HarmonyInstance = new Harmony($"LabRunning-{staticIncrementer++}");
 			try
 			{
-
 				// Get the ServesideUpdate method. Hopefully it's not Ambiguous
 				svsideUpdate = typeof(Stamina).GetMethod("ServesideUpdate",
 						BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
@@ -52,13 +51,13 @@ namespace Labrunning
 
 				// Patch the method
 				HarmonyInstance.Patch(svsideUpdate, null, null, new HarmonyMethod(typeof(ProcessStaminaOverride), nameof(ProcessStaminaOverride.Transpiler)));
+				// Patch everything else
+				HarmonyInstance.PatchAll();
 				base.OnEnabled();
 
-			} catch (AmbiguousMatchException)
-			{
+			} catch (AmbiguousMatchException) {
 				Log.Error("AmbiguousMatchException! Labrunning will not work until it gets updated, feel free to delete the plugin.");
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				Log.Error(ex.ToString());
 				Log.Info("Don't worry: if you're seeing this message, your server is fine but the plugin is outdated. Feel free to delete the plugin.");
 			}
