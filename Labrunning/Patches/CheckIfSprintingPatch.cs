@@ -32,7 +32,6 @@ namespace Labrunning.Patches
 				var curInst = inst[i];
 				if (curInst.Branches(out var where) && inst[Math.Max(i - 1, 0)].Calls(vec3Equals)) 
 				{
-					Label newWhere = default;
 					// We're inside a Vector3 comparison.
 					// Find the else in the next few instructions (if it wasn't
 					// patched already)
@@ -56,16 +55,13 @@ namespace Labrunning.Patches
 								// the instructions before)
 								if (inst[k].StoresField(_prevPosition)) {
 									// This shouldn't break unless .NET changes,
-									// every instruction has a label
-									newWhere = inst[k + 1].labels[0];
+									// every instruction should have a label
+									// Replace the jump
+									curInst.operand = inst[k + 1].labels[0];
+									return inst;
 								}
 							}
 						}
-					}
-					// Replace the jump
-					if (newWhere != default)
-					{
-						curInst.operand = newWhere;
 					}
 				}
 			}

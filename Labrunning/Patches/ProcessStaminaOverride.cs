@@ -33,7 +33,7 @@ namespace Labrunning.Patches
 			var found = false;
 			if (_processStamina == null)
 			{
-				Log.Error("Can't find ProcessStamina in the Stamina class. Don't worry, your server is fine, Labrunning is just outdated.");
+				Log.Warn("Can't find ProcessStamina in the Stamina class. Don't worry, your server is fine, Labrunning is just outdated.");
 				foreach (var instruction in instructions) yield return instruction;
 				yield break;
 			}
